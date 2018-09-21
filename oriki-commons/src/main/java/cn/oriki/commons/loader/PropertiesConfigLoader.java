@@ -29,8 +29,8 @@ public class PropertiesConfigLoader {
     private Map<String, String> parameters;
 
     public PropertiesConfigLoader(String... propertiesPaths) {
-        // check
         {
+            // check
             this.properties = new Properties();
             this.checkParameters();
         }
@@ -61,7 +61,9 @@ public class PropertiesConfigLoader {
     }
 
     /**
-     * 根据 key 获取 value ，直接转换 boolean 类型。如果获取不到，返回 null
+     * 根据 key 获取 value ，直接转换 boolean 类型。
+     * <p>
+     * 如果获取不到或转换失败，返回 null
      *
      * @param key 键 key
      * @return 获取 key 转换为 boolean 类型，成功返回 boolean，失败或未获取到返回 null
@@ -80,7 +82,9 @@ public class PropertiesConfigLoader {
     }
 
     /**
-     * 根据 key 获取 value ，转换成 boolean 类型。如果获取不到，返回 defaultBoolean
+     * 根据 key 获取 value ，转换成 boolean 类型。
+     * <p>
+     * 如果获取不到或转换失败，返回 defaultBoolean
      *
      * @param key            键 key
      * @param defaultBoolean 默认 boolean 类型
