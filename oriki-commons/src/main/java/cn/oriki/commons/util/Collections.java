@@ -12,16 +12,6 @@ import java.util.*;
 public class Collections {
 
     /**
-     * 集合不为空并且存在数据返回 true
-     *
-     * @param collection 集合
-     * @return 集合不为空并且存在数据的情况返回 true
-     */
-    public static boolean nonNullAndHasElements(Collection<?> collection) {
-        return !isNullOrEmpty(collection);
-    }
-
-    /**
      * 集合为空 或者 集合没有数据返回 true
      *
      * @param collection 集合
@@ -29,6 +19,16 @@ public class Collections {
      */
     public static boolean isNullOrEmpty(Collection<?> collection) {
         return Objects.isNull(collection) || collection.isEmpty();
+    }
+
+    /**
+     * 集合不为空并且存在数据返回 true
+     *
+     * @param collection 集合
+     * @return 集合不为空并且存在数据的情况返回 true
+     */
+    public static boolean nonNullAndHasElements(Collection<?> collection) {
+        return !isNullOrEmpty(collection);
     }
 
     /**
@@ -97,7 +97,7 @@ public class Collections {
     }
 
     /**
-     * 对 List 集合进行等分
+     * 将 List 等分为 n 个 List
      *
      * @param list 待分割集合
      * @param n    等分数量
