@@ -1,14 +1,12 @@
-package cn.oriki.user.entity;
+package cn.oriki.user.entity.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
-
 /**
- * 用户信息实体
+ * 用户信息实体 dto
  *
  * @author oriki.wang
  */
@@ -16,27 +14,17 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @ToString
-@Entity
-@Table(name = "t_user_info")
-public class UserInfo {
+public class UserInfoDto {
 
     /**
      * id
      */
-    @Id
-    @Column(name = "id", unique = true, updatable = false, length = 32)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     /**
      * username
      */
     private String username;
-
-    /**
-     * password
-     */
-    private String password;
 
     /**
      * phone_number

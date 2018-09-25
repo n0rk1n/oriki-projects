@@ -2,12 +2,14 @@ package cn.oriki.user.controller;
 
 import cn.oriki.commons.util.Responses;
 import cn.oriki.user.entity.UserInfo;
+import cn.oriki.user.entity.dto.UserInfoDto;
+import cn.oriki.user.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 /**
  * User Controller
@@ -20,6 +22,13 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+    private final UserInfoService userInfoService;
+
+    @Autowired
+    public UserController(UserInfoService userInfoService) {
+        this.userInfoService = userInfoService;
+    }
+
     @GetMapping(value = "/login")
     public String login(@RequestParam(name = "username") String username,
                         @RequestParam(name = "password") String password) {
@@ -30,18 +39,42 @@ public class UserController {
         assert password != null;
 
         // success
-        UserInfo userInfo = new UserInfo();
+        UserInfoDto userInfoDto = new UserInfoDto();
         {
-            userInfo.setId(-1L);
-            userInfo.setUsername("default-user");
-            userInfo.setPassword("******");
-            userInfo.setPhoneNumber("18888888888");
-            userInfo.setNickName("default-nick-name");
-            userInfo.setAge(-1);
-            userInfo.setSalary(0.0D);
+            userInfoDto.setId(-1L);
+            userInfoDto.setUsername("default-user");
+            userInfoDto.setPhoneNumber("18888888888");
+            userInfoDto.setNickName("default-nick-name");
+            userInfoDto.setAge(-1);
+            userInfoDto.setSalary(-1.0D);
         }
 
-        return Responses.returnSuccess(userInfo);
+        return Responses.returnSuccess(userInfoDto);
+    }
+
+    @PostMapping(value = "/register")
+    public String register(@RequestParam(name = "username") String username,
+                           @RequestParam(name = "password") String password,
+                           @RequestParam(name = "phoneNumber", required = false) String phoneNumber,
+                           @RequestParam(name = "nickName", required = false) String nickName,
+                           @RequestParam(name = "age", required = false) Integer age,
+                           @RequestParam(name = "salary", required = false) Double salary) {
+        UserInfo userInfo = new UserInfo();
+        {
+            userInfo.setUsername(username);
+            userInfo.setPassword(password);
+            userInfo.setPhoneNumber(phoneNumber);
+            userInfo.setNickName(nickName);
+            userInfo.setAge(age);
+            userInfo.setSalary(salary);
+        }
+        
+        UserInfo uInfo = this.userInfoService.save(userInfo);
+
+        if (Objects.nonNull(uInfo.getId())) {
+            return Responses.returnSuccess();
+        }
+        return Responses.returnFail();
     }
 
 }
