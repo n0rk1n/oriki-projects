@@ -59,6 +59,11 @@ public class UserInfoController {
             }
         }
 
+        // 判断当前用户名是否被注册
+        if (this.userInfoService.existsByUserName(username)) {
+            return Responses.returnFail("该用户名以被使用");
+        }
+
         UserInfo userInfo = new UserInfo();
         {
             userInfo.setUsername(username);

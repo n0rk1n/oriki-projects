@@ -74,4 +74,9 @@ public class UserInfoService {
         }
     }
 
+    public boolean existsByUserName(String username) {
+        // 根据用户名判断用户是否存在
+        return this.userInfoRepository.existsByUsername(username);
+    }
+
 }

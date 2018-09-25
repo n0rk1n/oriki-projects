@@ -19,4 +19,12 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
      */
     UserInfo queryByUsernameAndPassword(String username, String password);
 
+    /**
+     * 根据用户名称判断用户是否存在
+     *
+     * @param username 用户名
+     * @return 用户信息
+     */
+    boolean existsByUsername(String username);
+
 }
