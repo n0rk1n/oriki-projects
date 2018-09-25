@@ -21,6 +21,7 @@
 
         <guava.version>26.0-jre</guava.version>
         <fastjson.version>1.2.49</fastjson.version>
+        <mysql.version>6.0.6</mysql.version>
     </properties>
 
     <dependencyManagement>
@@ -42,6 +43,11 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -59,7 +65,7 @@
     </dependencies>
 
     <build>
-        <finalName>oriki-version</finalName>
+        <finalName>${project.artifactId}</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>

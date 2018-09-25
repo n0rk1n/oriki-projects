@@ -10,7 +10,9 @@ import org.springframework.context.annotation.ComponentScan;
  * @author oriki.wang
  */
 @SpringBootApplication
-@ComponentScan(value = {"cn.oriki.user.controller"})
+@ComponentScan(value = {"cn.oriki.user.controller",
+        "cn.oriki.user.service",
+        "cn.oriki.user.dao.repository"})
 public class UserApplication {
 
     public static void main(String[] args) {
