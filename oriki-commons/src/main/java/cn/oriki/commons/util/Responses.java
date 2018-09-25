@@ -44,6 +44,16 @@ public class Responses {
     }
 
     /**
+     * 返回失败的 Response 实体
+     *
+     * @return
+     */
+    public static String returnFail(String message) {
+        ResponseBody responseBody = newResponseBody(ResponseCode.EXCEPTION, ResponseType.FAIL, message);
+        return Jsons.toJson(responseBody);
+    }
+
+    /**
      * 返回服务器异常的 Response 实体
      *
      * @param e 异常信息

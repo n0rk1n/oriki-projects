@@ -65,7 +65,7 @@
     </dependencies>
 
     <build>
-        <finalName>oriki-version</finalName>
+        <finalName>${project.artifactId}</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>

@@ -17,10 +17,12 @@ public class ResponseBody {
      * 消息实体
      */
     private Object message;
+
     /**
      * 返回 code，枚举 ResponseCode
      */
     private String code;
+
     /**
      * 种类 ，枚举 ResponseType
      */

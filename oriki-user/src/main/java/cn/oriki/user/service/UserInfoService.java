@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 /**
  * UserInfo Service
@@ -16,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
  * @author oriki.wang
  */
 @Service
+@Transactional
 public class UserInfoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoService.class);
@@ -34,18 +37,40 @@ public class UserInfoService {
      * <p>
      * 成功会获取数据库插入 id ，失败 id 为 null
      *
-     * @param userInfo
-     * @return
+     * @param userInfo UserInfo
+     * @return UserInfo 如果成功携带 id，如果失败 id 为 null
      */
     public UserInfo save(UserInfo userInfo) {
         try {
-            String password = userInfo.getPassword();
-            userInfo.setPassword(Md5s.getMd5(password));
+            // set Id null
+            userInfo.setId(null);
+
+            // md5 password
+            String oldPassword = userInfo.getPassword();
+            userInfo.setPassword(Md5s.getMd5(oldPassword));
+
+            // set create_date & update_date
+            userInfo.setCreateDate(new Date());
+            userInfo.setUpdateDate(new Date());
+
+            // set del_tag false
+            userInfo.setDelTag(false);
+
             return this.userInfoRepository.save(userInfo);
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error("get password's md5 fail , " + e);
             userInfo.setId(null);
             return userInfo;
+        }
+    }
+
+    public UserInfo queryByUsernameAndPassword(String username, String password) {
+        try {
+            password = Md5s.getMd5(password);
+            return this.userInfoRepository.queryByUsernameAndPassword(username, password);
+        } catch (NoSuchAlgorithmException e) {
+            LOGGER.error("get password's md5 fail" + e);
+            return null;
         }
     }
 

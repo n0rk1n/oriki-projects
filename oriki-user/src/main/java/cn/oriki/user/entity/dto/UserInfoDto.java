@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 /**
  * 用户信息实体 dto
  *
@@ -27,6 +29,16 @@ public class UserInfoDto {
     private String username;
 
     /**
+     * real_name
+     */
+    private String realName;
+
+    /**
+     * identity_id
+     */
+    private String identityId;
+
+    /**
      * phone_number
      */
     private String phoneNumber;
@@ -42,8 +54,13 @@ public class UserInfoDto {
     private Integer age;
 
     /**
-     * salary
+     * create_date
      */
-    private Double salary;
+    private Date createDate;
+
+    /**
+     * update_date
+     */
+    private Date updateDate;
 
 }
