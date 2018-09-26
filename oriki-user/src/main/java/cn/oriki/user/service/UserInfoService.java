@@ -18,7 +18,7 @@ import java.util.Date;
  * @author oriki.wang
  */
 @Service
-@Transactional
+@Transactional(rollbackOn = {Exception.class})
 public class UserInfoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoService.class);
@@ -47,7 +47,7 @@ public class UserInfoService {
 
             // md5 password
             String oldPassword = userInfo.getPassword();
-            userInfo.setPassword(Md5s.getMd5(oldPassword));
+            userInfo.setPassword(this.encryption(oldPassword));
 
             // set create_date & update_date
             userInfo.setCreateDate(new Date());
@@ -59,14 +59,22 @@ public class UserInfoService {
             return this.userInfoRepository.save(userInfo);
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error("get password's md5 fail , " + e);
+            // controller 校验成功失败的依据
             userInfo.setId(null);
             return userInfo;
         }
     }
 
+    /**
+     * 根据用户名和密码登录的方法
+     *
+     * @param username 用户名
+     * @param password 密码（未加密
+     * @return 如果存在用户，返回 UserInfo 信息，即使被注销用户也会返回
+     */
     public UserInfo queryByUsernameAndPassword(String username, String password) {
         try {
-            password = Md5s.getMd5(password);
+            password = this.encryption(password);
             return this.userInfoRepository.queryByUsernameAndPassword(username, password);
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error("get password's md5 fail" + e);
@@ -74,9 +82,25 @@ public class UserInfoService {
         }
     }
 
+    /**
+     * 根据用户名判断用户是否存在
+     *
+     * @param username 用户名
+     * @return 存在 返回 true
+     */
     public boolean existsByUserName(String username) {
-        // 根据用户名判断用户是否存在
         return this.userInfoRepository.existsByUsername(username);
+    }
+
+    /**
+     * 加密方法，不可逆
+     *
+     * @param oldPassword 未加密
+     * @return 加密后的代码
+     * @throws NoSuchAlgorithmException 未匹配加密方式抛出
+     */
+    private String encryption(String oldPassword) throws NoSuchAlgorithmException {
+        return Md5s.getMd5(oldPassword);
     }
 
 }

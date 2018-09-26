@@ -51,6 +51,7 @@ public class UserInfoController {
                            @RequestParam(name = "age", required = false) Integer age,
                            @RequestParam(name = "identityId", required = false) String identityId) {
         {
+            // check
             if (!checkUsername(username)) {
                 return Responses.returnFail("用户名称不合法");
             }
@@ -61,9 +62,10 @@ public class UserInfoController {
 
         // 判断当前用户名是否被注册
         if (this.userInfoService.existsByUserName(username)) {
-            return Responses.returnFail("该用户名以被使用");
+            return Responses.returnFail("该用户名已被使用");
         }
 
+        LOGGER.info("用户名：" + username + " 正在执行注册操作。");
         UserInfo userInfo = new UserInfo();
         {
             userInfo.setUsername(username);
@@ -74,11 +76,9 @@ public class UserInfoController {
             userInfo.setAge(age);
             userInfo.setIdentityId(identityId);
         }
-
-        LOGGER.info("用户名：" + username + " 正在执行注册操作。");
         UserInfo uInfo = this.userInfoService.save(userInfo);
 
-        if (uInfo.getId() != null) {
+        if (uInfo != null && uInfo.getId() != null) {
             return Responses.returnSuccess();
         }
         return Responses.returnFail();
